@@ -1,0 +1,24 @@
+networks: 
+  platform-networks:
+    driver: bridge
+    
+services:
+  consolidation-api:
+    build:
+      context: ./src/Consolidation/Consolidation.Api
+    ports:
+      - "8030:5000"
+    networks: 
+      - platform-networks  
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  
+  transaction-api:
+    build:
+      context: ./src/Transaction/Transaction.Api
+    ports:
+      - "8031:5001"
+    networks: 
+      - platform-networks  
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development   
