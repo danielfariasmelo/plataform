@@ -10,6 +10,7 @@
     <Folder Include="Events\" />
     <Folder Include="Templates\" />
     <Folder Include="UseCases\Consolidation\Create\" />
+    <Folder Include="UseCases\Consolidation\Create\DTOs\" />
   </ItemGroup>
 
 </Project>

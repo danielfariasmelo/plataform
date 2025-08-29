@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Events\" />
+    <Folder Include="Templates\" />
+    <Folder Include="UseCases\Transaction\Get\DTOs\" />
+  </ItemGroup>
+
 </Project>

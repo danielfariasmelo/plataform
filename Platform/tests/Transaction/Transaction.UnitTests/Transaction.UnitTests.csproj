@@ -20,4 +20,11 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Appication\" />
+    <Folder Include="Domain\" />
+    <Folder Include="Validators\" />
+    <Folder Include="Templates\" />
+  </ItemGroup>
+
 </Project>
