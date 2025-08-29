@@ -136,20 +136,23 @@ Cada serviço tem seu próprio banco de dados, permitindo independência e resil
 ```
 /Platform
   /Platform.Domain
-    Entities/
-    Interfaces/
-    ValueObjects/
-    UseCases/
+    Entity/
+    Enum/
+	Repository/
+    Validator/
+	ValueObject/
   /Platform.Application
+	Events/
+    Templates/
     UseCases/
-    DTOs/
-    Services/
   /Platform.Infrastructure
     Data/
     Messaging/
     Security/
   /Platform.Api
+    Configurations/
     Controllers/
+	Filters/
     Program.cs
 ```
 
