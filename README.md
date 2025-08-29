@@ -1,4 +1,4 @@
-# Arquitetura Plataform
+# Arquitetura Platform
 
 ## 1. Visão Geral
 
@@ -134,21 +134,21 @@ Cada serviço tem seu próprio banco de dados, permitindo independência e resil
 ### 4.1 Estrutura de Pastas
 
 ```
-/Plataform
-  /Plataform.Domain
+/Platform
+  /Platform.Domain
     Entities/
     Interfaces/
     ValueObjects/
     UseCases/
-  /Plataform.Application
+  /Platform.Application
     UseCases/
     DTOs/
     Services/
-  /Plataform.Infrastructure
+  /Platform.Infrastructure
     Data/
     Messaging/
     Security/
-  /Plataform.Api
+  /Platform.Api
     Controllers/
     Program.cs
 ```
