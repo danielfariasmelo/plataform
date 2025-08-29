@@ -15,4 +15,9 @@
     <Folder Include="Configurations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Transaction.Application\Transaction.Application.csproj" />
+    <ProjectReference Include="..\Transaction.Infrastructure\Transaction.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

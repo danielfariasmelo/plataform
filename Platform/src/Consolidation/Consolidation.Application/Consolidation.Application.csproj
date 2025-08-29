@@ -13,4 +13,8 @@
     <Folder Include="UseCases\Consolidation\Create\DTOs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Commons\Commons.Infra.RabbitMQ\Commons.Infra.RabbitMQ.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -15,4 +15,10 @@
     <Folder Include="Filters\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Commons\Commons.Infra.RabbitMQ\Commons.Infra.RabbitMQ.csproj" />
+    <ProjectReference Include="..\Consolidation.Application\Consolidation.Application.csproj" />
+    <ProjectReference Include="..\Consolidation.Infrastructure\Consolidation.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

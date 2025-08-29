@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Platform.Api": {
+    "Platform.Consolidation.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

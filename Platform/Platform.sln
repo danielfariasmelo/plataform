@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36310.24 d17.14
+VisualStudioVersion = 17.14.36310.24
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Transaction", "Transaction", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -42,6 +42,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transaction.IntegrationTests", "tests\Transaction\Transaction.IntegrationTests\Transaction.IntegrationTests.csproj", "{08BE271B-D775-4622-AA76-094B30AAB4D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transaction.EndToEndTests", "tests\Transaction\Transaction.EndToEndTests\Transaction.EndToEndTests.csproj", "{8D5C1F96-61DD-4D8D-BAFB-C78661B2F166}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commons", "Commons", "{A61B9AF6-D7B8-48FA-9E35-F31C23390B66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons.Infra.RabbitMQ", "src\Commons\Commons.Infra.RabbitMQ\Commons.Infra.RabbitMQ.csproj", "{2738DDF6-5E43-4559-A81B-442B0EB94733}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +109,10 @@ Global
 		{8D5C1F96-61DD-4D8D-BAFB-C78661B2F166}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D5C1F96-61DD-4D8D-BAFB-C78661B2F166}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D5C1F96-61DD-4D8D-BAFB-C78661B2F166}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2738DDF6-5E43-4559-A81B-442B0EB94733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2738DDF6-5E43-4559-A81B-442B0EB94733}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2738DDF6-5E43-4559-A81B-442B0EB94733}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2738DDF6-5E43-4559-A81B-442B0EB94733}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +136,8 @@ Global
 		{26B054AD-3DCC-4001-BA2D-8AA1E8B618A5} = {0E6A3375-B405-42D8-AFD3-F50FF457DAFE}
 		{08BE271B-D775-4622-AA76-094B30AAB4D1} = {0E6A3375-B405-42D8-AFD3-F50FF457DAFE}
 		{8D5C1F96-61DD-4D8D-BAFB-C78661B2F166} = {0E6A3375-B405-42D8-AFD3-F50FF457DAFE}
+		{A61B9AF6-D7B8-48FA-9E35-F31C23390B66} = {76D0AB34-EA23-44D1-8D6B-2A4AE36483CB}
+		{2738DDF6-5E43-4559-A81B-442B0EB94733} = {A61B9AF6-D7B8-48FA-9E35-F31C23390B66}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1416CD98-5EB4-47DC-A5BC-4226D332B228}

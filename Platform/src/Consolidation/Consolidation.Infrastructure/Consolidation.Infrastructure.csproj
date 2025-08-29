@@ -7,9 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Messaging\" />
     <Folder Include="Data\" />
     <Folder Include="Secutiry\" />
   </ItemGroup>
 
+  <ItemGroup>
+	<PackageReference Include="RabbitMQ.Client" Version="6.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Commons\Commons.Infra.RabbitMQ\Commons.Infra.RabbitMQ.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+  </ItemGroup>
+	
 </Project>

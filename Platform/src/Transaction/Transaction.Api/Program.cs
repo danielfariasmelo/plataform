@@ -1,11 +1,16 @@
+using Commons.Infra.RabbitMQ;
+using Transaction.Application.UseCases.Transaction.Create;
+using Transaction.Infrastructure.Messaging;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<CreateTransationUseCase>();
+builder.Services.AddScoped<IEventPublisher, RabbitMqEventPublisher>();
 
 var app = builder.Build();
 

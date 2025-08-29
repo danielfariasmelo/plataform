@@ -9,7 +9,12 @@
   <ItemGroup>
     <Folder Include="Events\" />
     <Folder Include="Templates\" />
-    <Folder Include="UseCases\Transaction\Get\DTOs\" />
   </ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\..\Commons\Commons.Infra.RabbitMQ\Commons.Infra.RabbitMQ.csproj" />
+		<ProjectReference Include="..\Transaction.Domain\Transaction.Domain.csproj" />
+		<PackageReference Include="RabbitMQ.Client" Version="6.8.0" />
+	</ItemGroup>
+	
 </Project>

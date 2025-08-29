@@ -199,7 +199,8 @@ Cada serviço tem seu próprio banco de dados, permitindo independência e resil
    - Kong Proxy: http://localhost:8000
    - Keycloak: http://localhost:8080
    - RabbitMQ UI: http://localhost:15672 (guest/guest)
-
+   - http://localhost:8030/transaction
+   - http://localhost:8031/consolidation
 ---
 
 ## 7. Referências de Arquivos
