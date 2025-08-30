@@ -13,6 +13,7 @@ Esta solução implementa um sistema de controle financeiro com foco em **escala
 - **Serviços Stateless**: todos os microsserviços são stateless, facilitando escalonamento horizontal e login.
 - **Circuit Breaker** implementado nas chamadas síncronas entre serviços para garantir resiliência.
 - **Views Materializadas** e **Read Replicas** utilizadas para otimizar e escalar consultas ao serviço de consolidação.
+- **Padrão Mediator com MediatR**: desacoplamento dos fluxos de negócio, facilitando manutenção e testes.
 
 ---
 
@@ -56,6 +57,11 @@ Esta solução implementa um sistema de controle financeiro com foco em **escala
   - **Read replicas** distribuem a carga de leitura, permitindo que múltiplas instâncias de serviço de consolidação realizem consultas simultâneas sem degradar a performance do banco principal.
   - Essa abordagem garante que, mesmo em cenários de pico de acesso, a arquitetura suporta alta concorrência e mantém baixa latência, atendendo ao requisito de até 50 req/s e tolerância de perda.
 
+- **Padrão Mediator com MediatR:**  
+  - O padrão de projeto Mediator foi implementado utilizando a biblioteca [MediatR](https://github.com/jbogard/MediatR).
+  - Todos os fluxos de negócio (Commands, Queries, Notifications) são desacoplados dos controllers, centralizados em handlers.
+  - Isso facilita a manutenção, a testabilidade e a extensão das regras de negócio, permitindo aplicar comportamentos transversais (ex: validação, logging, cache) de forma centralizada.
+
 ---
 
 ### 2.3 Padrão de Projeto
@@ -64,6 +70,11 @@ Esta solução implementa um sistema de controle financeiro com foco em **escala
   - Separação clara de responsabilidades
   - Camadas: Domain, Application, Infrastructure, Presentation (API)
   - Facilita testes, manutenção e evolução dos serviços
+
+- **Mediator (MediatR)**:  
+  - Controllers disparam comandos/queries via IMediator.
+  - Regras de negócio ficam centralizadas em handlers, promovendo baixo acoplamento.
+  - Facilita a implementação de cross-cutting concerns e pipelines (ex: logging, validação, etc).
 
 ### 2.4 Microsserviços
 
@@ -123,26 +134,102 @@ Cada serviço tem seu próprio banco de dados, permitindo independência e resil
 
 ---
 
-## 3. Diagrama de Arquitetura
+## 3. Uso do padrão Mediator com MediatR
+
+A solução adota o padrão de projeto **Mediator** utilizando a biblioteca [MediatR](https://github.com/jbogard/MediatR), recomendada para aplicações .NET modernas.
+
+### Benefícios do uso de MediatR:
+
+- **Desacoplamento:** Controllers não conhecem detalhes da lógica de negócio, apenas enviam comandos/queries ao Mediator.
+- **Organização:** Fluxos de negócio ficam centralizados em handlers, facilitando manutenção e evolução.
+- **Testabilidade:** Handlers são facilmente testáveis, sem necessidade de instanciar controllers ou infraestrutura web.
+- **Extensibilidade:** Permite aplicar comportamentos (Behaviors) como logging, validação, cache e auditoria de forma transversal.
+- **Consistência:** Define padrões claros entre comandos (Command), consultas (Query) e notificações (Notification).
+
+### Estrutura típica com MediatR
+
+```csharp
+// Command
+public class CriarLancamentoCommand : IRequest<Lancamento>
+{
+    public string Descricao { get; set; }
+    public decimal Valor { get; set; }
+    public DateTime Data { get; set; }
+}
+
+// Handler
+public class CriarLancamentoHandler : IRequestHandler<CriarLancamentoCommand, Lancamento>
+{
+    public async Task<Lancamento> Handle(CriarLancamentoCommand request, CancellationToken cancellationToken)
+    {
+        // lógica de negócio: salvar no banco, publicar evento, etc
+        var lancamento = new Lancamento
+        {
+            Id = Guid.NewGuid(),
+            Descricao = request.Descricao,
+            Valor = request.Valor,
+            Data = request.Data
+        };
+        // ... salvar e publicar
+        return lancamento;
+    }
+}
+
+// Controller
+[ApiController]
+[Route("[controller]")]
+public class LancamentoController : ControllerBase
+{
+    private readonly IMediator _mediator;
+    public LancamentoController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Criar([FromBody] CriarLancamentoCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+}
+```
+
+### Como configurar o MediatR no .NET 8
+
+No `Program.cs` do serviço:
+
+```csharp
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CriarLancamentoHandler>());
+```
+
+### Observação
+
+- **Handlers** podem injetar repositórios, publishers, etc, normalmente definidos por interfaces, reforçando o uso de Clean Architecture.
+- O padrão Mediator via MediatR é aplicado em todos os microsserviços para manter consistência arquitetural e facilitar a evolução da solução.
+
+---
+
+## 4. Diagrama de Arquitetura
 
 ![Diagrama de Arquitetura](docs/architecture.png)
 
 ---
 
-## 4. Clean Architecture – Estrutura dos Serviços
+## 5. Clean Architecture – Estrutura dos Serviços
 
-### 4.1 Estrutura de Pastas
+### 5.1 Estrutura de Pastas
 
 ```
 /Platform
   /Platform.Domain
     Entity/
     Enum/
-	Repository/
+    Repository/
     Validator/
-	ValueObject/
+    ValueObject/
   /Platform.Application
-	Events/
+    Events/
     Templates/
     UseCases/
   /Platform.Infrastructure
@@ -152,11 +239,11 @@ Cada serviço tem seu próprio banco de dados, permitindo independência e resil
   /Platform.Api
     Configurations/
     Controllers/
-	Filters/
+    Filters/
     Program.cs
 ```
 
-### 4.2 Camadas
+### 5.2 Camadas
 
 - **Domain**:  
   Entidades, regras, interfaces de repositório/evento, casos de uso puros.
@@ -169,16 +256,16 @@ Cada serviço tem seu próprio banco de dados, permitindo independência e resil
 
 ---
 
-## 5. Fluxos Principais
+## 6. Fluxos Principais
 
-### 5.1 Lançamento
+### 6.1 Lançamento
 
 1. Usuário se autentica no Keycloak, obtém token JWT.
 2. Requisição é feita via Kong, que valida o JWT.
 3. Serviço de Lançamentos recebe, valida e grava a transação.
 4. Serviço publica evento no RabbitMQ.
 
-### 5.2 Consolidação
+### 6.2 Consolidação
 
 1. Serviço de Consolidação consome eventos do RabbitMQ.
 2. Atualiza saldos e relatórios diários.
@@ -187,7 +274,7 @@ Cada serviço tem seu próprio banco de dados, permitindo independência e resil
 
 ---
 
-## 6. Como Executar
+## 7. Como Executar
 
 1. Instale Docker e Docker Compose.
 2. Clone o repositório.
@@ -203,7 +290,7 @@ Cada serviço tem seu próprio banco de dados, permitindo independência e resil
    - http://localhost:8031/consolidation
 ---
 
-## 7. Referências de Arquivos
+## 8. Referências de Arquivos
 
 - `docker-compose.yml`: Orquestração completa dos serviços
 - `docs/arquitetura.png`: Diagrama gerado
@@ -211,7 +298,7 @@ Cada serviço tem seu próprio banco de dados, permitindo independência e resil
 
 ---
 
-## 8. Justificativas e Trade-offs
+## 9. Justificativas e Trade-offs
 
 - **Clean Architecture**: maior complexidade inicial, porém facilita evolução e testes.
 - **Microsserviços**: overhead de infraestrutura, mas garante escalabilidade e isolamento de falhas.
@@ -224,7 +311,7 @@ Cada serviço tem seu próprio banco de dados, permitindo independência e resil
 
 ---
 
-## 9. Considerações Finais
+## 10. Considerações Finais
 
 A arquitetura escolhida atende aos requisitos de escalabilidade, segurança, desacoplamento e facilidade de manutenção, sendo adequada tanto para MVPs quanto para evolução futura do produto.  
 A escolha por mensageria assíncrona garante que o serviço de lançamentos permaneça disponível mesmo diante de falhas ou sobrecarga no serviço de consolidação, atendendo ao requisito de resiliência e tolerância a picos de uso com perda controlada de requisições.  

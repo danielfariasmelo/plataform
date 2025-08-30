@@ -1,11 +1,22 @@
-﻿using Commons.Infra.RabbitMQ;
+﻿using Commons.Infra.RabbitMQ.Events;
+using Commons.Infra.RabbitMQ.Handlers;
+using Consolidation.Application.Interfaces.Repository;
+using Consolidation.Domain.Entity;
 
 namespace Consolidation.Application.Handlers;
 
 public class CreatedTransactionEventHandler : ICreatedTransactionEventHandler
 {
-    public void Handle(CreatedTransactionEvent evt)
+
+    private readonly IConsolidateRepository _repository;
+
+    public CreatedTransactionEventHandler(IConsolidateRepository repository)
     {
-        Console.WriteLine($"Evento recebido: {evt.TransactionId}");
+        _repository = repository;
+    }
+
+    public async Task Handle(CreatedTransactionEvent evt)
+    {
+        await _repository.SaveAsync(new Consolidate(evt.MovementId, evt.Description, evt.Value));
     }
 }

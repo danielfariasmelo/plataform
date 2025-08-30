@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Secutiry\" />
   </ItemGroup>
 
@@ -17,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Commons\Commons.Infra.RabbitMQ\Commons.Infra.RabbitMQ.csproj" />
+    <ProjectReference Include="..\Consolidation.Application\Consolidation.Application.csproj" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
   </ItemGroup>
 	

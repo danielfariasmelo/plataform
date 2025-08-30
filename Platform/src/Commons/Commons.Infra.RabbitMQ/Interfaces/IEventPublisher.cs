@@ -1,4 +1,6 @@
-﻿namespace Commons.Infra.RabbitMQ;
+﻿using Commons.Infra.RabbitMQ.Events;
+
+namespace Commons.Infra.RabbitMQ.Interfaces;
 
 public interface IEventPublisher
 {

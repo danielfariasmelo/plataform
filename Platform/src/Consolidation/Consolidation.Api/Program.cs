@@ -1,6 +1,4 @@
-using Commons.Infra.RabbitMQ;
-using Consolidation.Application.Handlers;
-using Consolidation.Infrastructure.Messaging;
+using Consolidation.Api.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +8,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddSingleton<ICreatedTransactionEventHandler, CreatedTransactionEventHandler>();
-builder.Services.AddSingleton<RabbitMqEventConsumer>();
-builder.Services.AddHostedService<RabbitMqConsumerService>();
+builder.Services.AddUseCases();
+builder.Services.AddRepositories();
+builder.Services.AddMessaging();
 
 var app = builder.Build();
 

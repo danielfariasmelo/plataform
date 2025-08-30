@@ -9,12 +9,12 @@
   <ItemGroup>
     <Folder Include="Events\" />
     <Folder Include="Templates\" />
-    <Folder Include="UseCases\Consolidation\Create\" />
-    <Folder Include="UseCases\Consolidation\Create\DTOs\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Commons\Commons.Infra.RabbitMQ\Commons.Infra.RabbitMQ.csproj" />
+    <ProjectReference Include="..\Consolidation.Domain\Consolidation.Domain.csproj" />
+	<PackageReference Include="MediatR" Version="10.0.1" />
   </ItemGroup>
 
 </Project>
