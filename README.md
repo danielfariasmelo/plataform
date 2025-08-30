@@ -231,14 +231,13 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Mo
 2. Clone o repositório.
 3. Execute:
    ```bash
-   docker-compose up --build
+   docker-compose up -d
    ```
 4. Acesse:
-   - Kong Proxy: http://localhost:8000
-   - Keycloak: http://localhost:8080
-   - RabbitMQ UI: http://localhost:15672 (guest/guest)
+   - http://localhost:8030/swagger ( documentação lançamentos )
    - http://localhost:8030/transaction
-   - http://localhost:8031/consolidation
+   - http://localhost:8031/swagger ( documentação consolidações )
+   - http://localhost:8031/consolidations 
 ---
 
 ## 8. Referências de Arquivos
