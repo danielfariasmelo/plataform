@@ -146,61 +146,12 @@ A solução adota o padrão de projeto **Mediator** utilizando a biblioteca [Med
 - **Extensibilidade:** Permite aplicar comportamentos (Behaviors) como logging, validação, cache e auditoria de forma transversal.
 - **Consistência:** Define padrões claros entre comandos (Command), consultas (Query) e notificações (Notification).
 
-### Estrutura típica com MediatR
-
-```csharp
-// Command
-public class CriarLancamentoCommand : IRequest<Lancamento>
-{
-    public string Descricao { get; set; }
-    public decimal Valor { get; set; }
-    public DateTime Data { get; set; }
-}
-
-// Handler
-public class CriarLancamentoHandler : IRequestHandler<CriarLancamentoCommand, Lancamento>
-{
-    public async Task<Lancamento> Handle(CriarLancamentoCommand request, CancellationToken cancellationToken)
-    {
-        // lógica de negócio: salvar no banco, publicar evento, etc
-        var lancamento = new Lancamento
-        {
-            Id = Guid.NewGuid(),
-            Descricao = request.Descricao,
-            Valor = request.Valor,
-            Data = request.Data
-        };
-        // ... salvar e publicar
-        return lancamento;
-    }
-}
-
-// Controller
-[ApiController]
-[Route("[controller]")]
-public class LancamentoController : ControllerBase
-{
-    private readonly IMediator _mediator;
-    public LancamentoController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Criar([FromBody] CriarLancamentoCommand command)
-    {
-        var result = await _mediator.Send(command);
-        return Ok(result);
-    }
-}
-```
-
 ### Como configurar o MediatR no .NET 8
 
 No `Program.cs` do serviço:
 
 ```csharp
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CriarLancamentoHandler>());
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<MovementHandler>());
 ```
 
 ### Observação
@@ -317,3 +268,25 @@ A arquitetura escolhida atende aos requisitos de escalabilidade, segurança, des
 A escolha por mensageria assíncrona garante que o serviço de lançamentos permaneça disponível mesmo diante de falhas ou sobrecarga no serviço de consolidação, atendendo ao requisito de resiliência e tolerância a picos de uso com perda controlada de requisições.  
 Além disso, a implementação stateless de todos os serviços garante escalabilidade horizontal e simplifica a experiência de login dos usuários.  
 O uso de **circuit breaker** reforça a resiliência nas integrações síncronas, e o emprego de **views materializadas** associadas a **read replicas** aumenta a performance e escalabilidade em consultas críticas do sistema de consolidação.
+
+## 11. Bibliotecas de Testes Utilizadas
+
+A solução utiliza as seguintes bibliotecas para testes automatizados e validação:
+
+- **[Bogus](https://github.com/bchavez/Bogus)**: geração de dados fake para testes (`34.0.2`)
+- **[FluentAssertions](https://fluentassertions.com/)**: asserções legíveis e poderosas nos testes (`6.7.0`)
+- **[FluentValidation](https://docs.fluentvalidation.net/en/latest/)**: validação fluente de objetos e regras de negócio (`11.2.2`)
+- **[Moq](https://github.com/moq/moq4)**: criação de mocks para dependências em testes unitários (`4.18.1`)
+
+Exemplo de referência no projeto de testes:
+
+```xml
+<ItemGroup>
+  <PackageReference Include="Bogus" Version="34.0.2" />
+  <PackageReference Include="FluentAssertions" Version="6.7.0" />
+  <PackageReference Include="FluentValidation" Version="11.2.2" />
+  <PackageReference Include="Moq" Version="4.18.1" />
+</ItemGroup>
+```
+
+Essas bibliotecas auxiliam na qualidade, legibilidade e confiabilidade dos testes automatizados dos microsserviços.
