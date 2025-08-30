@@ -3,33 +3,33 @@ networks:
     driver: bridge
 
 services:
-  # consolidation-api:
-    # build:
-      # context: ./
-      # dockerfile: src/Consolidation/Consolidation.Api/Dockerfile
-    # ports:
-      # - "8030:5000"
-    # networks:
-      # - platform-networks
-    # environment:
-      # - ASPNETCORE_ENVIRONMENT=Development
-    # depends_on:
-      # rabbitmq:
-        # condition: service_healthy
+  consolidation-api:
+    build:
+      context: ./
+      dockerfile: src/Consolidation/Consolidation.Api/Dockerfile
+    ports:
+      - "8030:5000"
+    networks:
+      - platform-networks
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
-  # transaction-api:
-    # build:
-      # context: ./
-      # dockerfile: src/Transaction/Transaction.Api/Dockerfile
-    # ports:
-      # - "8031:5001"
-    # networks:
-      # - platform-networks
-    # environment:
-      # - ASPNETCORE_ENVIRONMENT=Development
-    # depends_on:
-      # rabbitmq:
-        # condition: service_healthy
+  transaction-api:
+    build:
+      context: ./
+      dockerfile: src/Transaction/Transaction.Api/Dockerfile
+    ports:
+      - "8031:5001"
+    networks:
+      - platform-networks
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
   rabbitmq:
     image: rabbitmq:3.13-management

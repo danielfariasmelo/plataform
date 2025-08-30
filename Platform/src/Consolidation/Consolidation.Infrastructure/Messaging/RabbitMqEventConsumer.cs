@@ -18,8 +18,7 @@ public class RabbitMqEventConsumer
     public RabbitMqEventConsumer(ICreatedTransactionEventHandler handler, string hostname = "rabbitmq")
     {
         _handler = handler;
-        //var factory = new ConnectionFactory() { HostName = "rabbitmq", UserName = "guest", Password = "guest" };
-        var factory = new ConnectionFactory() { HostName = "localhost", UserName = "guest", Password = "guest" };
+        var factory = new ConnectionFactory() { HostName = "rabbitmq", UserName = "guest", Password = "guest" };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
         _channel.ExchangeDeclare(_exchange, ExchangeType.Fanout, durable: true);
